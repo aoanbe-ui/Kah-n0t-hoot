@@ -7,7 +7,7 @@
 <style>
   body {
     font-family: Arial, sans-serif;
-    background: url('your-background-image.jpg') center/cover no-repeat;
+    background: url('your-background-image.jpg') center/cover no-repeat; /* replace with your image */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,10 +16,10 @@
   }
 
   #quiz-box {
-    padding: 40px;
+    padding: 30px;
     border-radius: 20px;
     text-align: center;
-    width: 500px;
+    width: 450px;
     transition: background-color 0.5s, color 0.5s;
   }
 
@@ -35,12 +35,12 @@
     cursor: pointer;
     transition: all 0.3s;
     font-weight: bold;
-    font-size: 18px;
+    font-size: 15px;
     border: none;
   }
 
   .choice:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
     opacity: 0.85;
   }
 
@@ -79,8 +79,8 @@ const questions = [
     q: "A girl wears socks of different colors to school every day and never repeats a color during a 5-day week. On one of these days, her teacher asks her to wear the same-colored pair for a school photoshoot, but she wears a new white pair. How many pairs of socks has she worn this week?",
     options: ["4", "9", "12"],
     correct: 1,
-    boxColor: "linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #a0c4ff)", // custom rainbow
-    buttonColor: ["#ffadad", "#ffd6a5", "#fdffb6", "#caffbf", "#a0c4ff"]
+    boxColor: "linear-gradient(to right, #ffadad, #ffd6a5, #fdffb6, #caffbf, #a0c4ff)",
+    buttonColor: ["#9bf6ff", "#bdb2ff", "#ffc6ff"]
   }
 ];
 
@@ -102,7 +102,6 @@ function loadQuestion() {
   const box = document.getElementById("quiz-box");
   if(currentIndex !== 2) { // first two questions use solid colors
     box.style.backgroundColor = q.boxColor;
-    box.style.background = ""; // remove gradient if any
   } else { // rainbow for last
     box.style.background = q.boxColor;
   }
