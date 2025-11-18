@@ -100,6 +100,11 @@ let displayScore = 0;
 let attempts = 0;
 
 const questions = [
+  const preview = {
+  boxColor: "#ffffff",
+  title: "Logic Quiz",
+  buttonColor: "#bbdefb"
+};
   {
     q: "There are two ducks in front of a duck, two ducks behind a duck, and a duck in the middle. How many ducks are there?",
     options: ["5", "4", "3"],
@@ -138,21 +143,40 @@ function animateScore() {
 }
 
 function loadQuestion() {
+  const box = document.getElementById("quiz-box");
+
+  if (currentIndex === -1) {
+    box.style.background = preview.boxColor;
+
+    box.classList.remove("bounce-in");
+    void box.offsetWidth;
+    box.classList.add("bounce-in");
+
+    document.getElementById("question").innerText = preview.title;
+    document.getElementById("choices").innerHTML =
+      `<button class="choice bounce-in"
+               style="background:${preview.buttonColor}"
+               onclick="startQuiz()">
+         Start Quiz
+       </button>`;
+
+    document.getElementById("feedback").innerText = "";
+    document.getElementById("restart").innerHTML = "";
+    return;
+  }
+
   if (currentIndex >= questions.length) {
     document.getElementById("question").innerText =
       `Quiz Completed! Final Score: ${score}/${questions.length}`;
     document.getElementById("choices").innerHTML = "";
     document.getElementById("feedback").innerText = "";
-
     document.getElementById("restart").innerHTML =
       `<button class="choice" style="background:#caffbf" onclick="restartQuiz()">Restart Quiz</button>`;
     return;
   }
 
   attempts = 0;
-
   const q = questions[currentIndex];
-  const box = document.getElementById("quiz-box");
 
   box.style.background = q.boxColor;
 
@@ -208,11 +232,18 @@ function restartQuiz() {
   loadQuestion();
 }
 
+function startQuiz() {
+  currentIndex = 0;
+  loadQuestion();
+}
+  
+currentIndex = -1;
 loadQuestion();
 </script>
 
 </body>
 </html>
+
 
 
 
