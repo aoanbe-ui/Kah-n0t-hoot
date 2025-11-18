@@ -118,6 +118,8 @@ let score = 0;
 let displayScore = 0;
 let attempts = 0;
 let round = 1;
+let failedOnce = false;
+
 
 const questions = [
   {
@@ -160,15 +162,18 @@ function animateScore() {
   }, 20);
 }
 
-function loadQuestion() {
-  if (currentIndex >= questions.length) {
-    if (round === 1) {
-      round = 2;
-      currentIndex = 0;
-      document.getElementById("round-title").innerText = "Round 2 (Hints On)";
-      loadQuestion();
-      return;
+if (currentIndex >= questions.length) {
+    document.getElementById("choices").innerHTML = "";
+    document.getElementById("feedback").innerText = "";
+    if (!failedOnce) {
+      document.getElementById("question").innerText = "🎉 Quiz Completed!";
+    } else {
+      document.getElementById("question").innerText = "Quiz finished!";
     }
+    document.getElementById("choices").innerHTML =
+      `<button class="choice" style="background:#ffd6a5" onclick="restartQuiz()">Restart Quiz</button>`;
+    return;
+}
 
     document.getElementById("question").innerText =
       `Quiz Completed! Final Score: ${score}/${questions.length * 2}`;
@@ -213,24 +218,22 @@ function checkAnswer(selected) {
   const feedback = document.getElementById("feedback");
   const q = questions[currentIndex];
 
+  if (!q.firstTryUsed) q.firstTryUsed = false;
+
   if (selected === q.correct) {
-    score++;
-    animateScore();
     feedback.style.color = "green";
-    feedback.innerText = "Correct! +1 point";
+    feedback.innerText = "Correct! ✅";
     currentIndex++;
     setTimeout(loadQuestion, 800);
-
   } else {
-    attempts++;
-
-    if (attempts === 1) {
+    if (!q.firstTryUsed) {
+      q.firstTryUsed = true;
       feedback.style.color = "red";
       feedback.innerText = "Wrong! Try again.";
-      if (round === 2) showHint();
     } else {
+      failedOnce = true;
       feedback.style.color = "red";
-      feedback.innerText = "Oopsie! Moving on...";
+      feedback.innerText = "Oopsie! Moving on ➜";
       currentIndex++;
       setTimeout(loadQuestion, 800);
     }
@@ -245,18 +248,18 @@ function showHint() {
 }
 
 function restartQuiz() {
-  score = 0;
-  displayScore = 0;
   currentIndex = 0;
-  round = 1;
-  animateScore();
-  document.getElementById("round-title").innerText = "Round 1";
+  failedOnce = false;
+  questions.forEach(q => q.firstTryUsed = false);
+  document.getElementById("restart").innerHTML = "";
   loadQuestion();
 }
+
 
 loadQuestion();
 </script>
 
 </body>
 </html>
+
 
